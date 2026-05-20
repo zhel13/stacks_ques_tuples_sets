@@ -1,6 +1,15 @@
 from functools import reduce
 
-possible_operators = ['*', '+', '-', '/']
+def calculate(op, iter):
+    global result
+    if op == "*":
+        result = reduce(lambda x, y: x * y, iter)
+    elif op == "+":
+        result = reduce(lambda x, y: x + y, iter)
+    elif op == "-":
+        result = reduce(lambda x, y: x - y, iter)
+    elif op == "/":
+        result = reduce(lambda x, y: x // y, iter)
 
 
 string_expression = input().split()
@@ -13,14 +22,7 @@ while string_expression:
         initial.append(int(string_expression.pop(0)))
     else:
         operator = string_expression.pop(0)
-        if operator == "*":
-            result = reduce(lambda x, y: x * y, initial)
-        elif operator == "+":
-            result = reduce(lambda x, y: x + y, initial)
-        elif operator == "-":
-            result = reduce(lambda x, y: x - y, initial)
-        elif operator == "/":
-            result = reduce(lambda x, y: x // y, initial)
+        calculate(operator, initial)
 
         initial.clear()
         initial.append(result)
