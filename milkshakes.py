@@ -20,7 +20,7 @@
 #             if chocolate_milkshake == 5:
 #                 have_milkshakes = True
 #                 break
-#         else:
+#         elif chocolates[-1] != cups_milk[0]:
 #             cups_milk.rotate(1)
 #             chocolates[-1] -= 5
 #
@@ -33,42 +33,37 @@
 # print(f"Milk: {', '.join([str(m) for m in cups_milk]) or 'empty'}")
 from collections import deque
 
-def check_numbers(c, m, ch, ml):
-
-    if c > 0 < m:
-        ml.appendleft(str(m))
-        c -= 5
-        ch.append(str(c))
-
-    elif c > 0 > m:
-        ch.append(str(c))
-
-    else:
-        ml.appendleft(str(m))
-
-chocolates = input().split(", ")
-milk = deque(input().split(", "))
+chocolates = list(map(int, input().split(", ")))
+milk_cup = deque(map(int, input().split(", ")))
 
 milkshakes = 0
-have_milkshakes = False
+is_milkshake = False
 
-while chocolates and milk:
+while milk_cup and chocolates:
+    last_chocolate = chocolates[-1]
+    first_milk_cup = milk_cup[0]
 
-    chock_num = int(chocolates.pop())
-    milk_num = int(milk.popleft())
-    if chock_num != milk_num:
-        check_numbers(chock_num, milk_num, chocolates, milk)
-    elif chock_num > 0 < milk_num:
-        milkshakes += 1
-        if milkshakes == 5:
-            have_milkshakes = True
-            break
+    if last_chocolate > 0 < first_milk_cup:
+        if last_chocolate == first_milk_cup:
+            milkshakes += 1
+            chocolates.pop()
+            milk_cup.popleft()
+            if milkshakes == 5:
+                is_milkshake = True
+                break
+        else:
+            milk_cup.rotate(1)
+            last_chocolate -= 5
+            chocolates[-1] = last_chocolate
+    else:
+        if last_chocolate <= 0:
+            chocolates.pop()
+        if first_milk_cup <=0:
+            milk_cup.popleft()
 
-if have_milkshakes:
+if is_milkshake:
     print("Great! You made all the chocolate milkshakes needed!")
 else:
     print("Not enough milkshakes.")
-
-print(f"Chocolate: {', '.join(chocolates) or 'empty'}")
-print(f"Milk: {', '.join(milk) or 'empty'}")
-
+print(f"Chocolate: {', '.join(str(c) for c in chocolates) or 'empty'}")
+print(f"Milk: {', '.join(str(m) for m in milk_cup) or 'empty'}")
