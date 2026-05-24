@@ -39,7 +39,7 @@ milk_cup = deque(map(int, input().split(", ")))
 milkshakes = 0
 is_milkshake = False
 
-while milk_cup and chocolates:
+while milk_cup and chocolates and milkshakes < 5:
     last_chocolate = chocolates[-1]
     first_milk_cup = milk_cup[0]
 
@@ -50,9 +50,8 @@ while milk_cup and chocolates:
             milk_cup.popleft()
             if milkshakes == 5:
                 is_milkshake = True
-                break
         else:
-            milk_cup.rotate(1)
+            milk_cup.rotate(-1)
             last_chocolate -= 5
             chocolates[-1] = last_chocolate
     else:
