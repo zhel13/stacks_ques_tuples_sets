@@ -1,7 +1,24 @@
 from collections import deque
 
-def negative_result(magic, material):
-    return magic + material
+def negative_result(magic, material, product):
+    product = magic[0] + material[-1]
+    magic.popleft()
+    material.pop()
+    material.append(product)
+
+def positive_result(magic, material, xmass_presents, toys,  product):
+    if product in xmass_presents.values():
+        for key, value in xmass_presents.items():
+            if xmass_presents[key] == product:
+                if key not in toys:
+                    toys[key] = 0
+                toys[key] += 1
+                magic.popleft()
+                material.pop()
+                return
+    else:
+        magic.popleft()
+        material[-1] += 15
 
 def find_zeros(magic, material):
     if magic[0] == 0:
@@ -15,8 +32,6 @@ def check_if_christmas_ready(crafted):
         print("The presents are crafted! Merry Christmas!")
     else:
         print("No presents this Christmas!")
-
-
 
 box_of_materials = [int(b) for b in input().split()]
 magic_level = deque([int(m) for m in input().split()])
@@ -33,24 +48,11 @@ product_operation = 0
 
 while box_of_materials and magic_level:
     product_operation = magic_level[0] *  box_of_materials[-1]
+
     if  product_operation < 0:
-        product_operation = negative_result(box_of_materials[-1], magic_level[0])
-        magic_level.popleft()
-        box_of_materials.pop()
-        box_of_materials.append(product_operation)
+        negative_result(magic_level, box_of_materials, product_operation)
     elif product_operation > 0:
-        if product_operation in presents.values():
-            for k, v in presents.items():
-                if product_operation == v:
-                    box_of_materials.pop()
-                    magic_level.popleft()
-                    if k not in crafted_toys:
-                        crafted_toys[k] =0
-                    crafted_toys[k] += 1
-                    break
-        else:
-            magic_level.popleft()
-            box_of_materials[-1] += 15
+        positive_result(magic_level, box_of_materials, presents, crafted_toys, product_operation)
     else:
         find_zeros(magic_level, box_of_materials)
 
